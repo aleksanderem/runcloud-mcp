@@ -1,0 +1,22 @@
+{
+  "name": "runcloud-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for RunCloud API integration",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "axios": "^1.6.0"
+  },
+  "keywords": [
+    "mcp",
+    "runcloud",
+    "api",
+    "server-management"
+  ],
+  "author": "Aleksander M.",
+  "license": "MIT"
+}
