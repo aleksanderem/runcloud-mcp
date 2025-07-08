@@ -61,6 +61,8 @@ Skonfiguruj bezpośrednio w konfiguracji klienta MCP (zobacz sekcję Konfiguracj
 
 2. Dodaj konfigurację serwera RunCloud:
 
+**Uwaga:** Na macOS, jeśli używasz Node.js z NVM lub Homebrew, użyj pełnej ścieżki do node. Znajdź ją poleceniem `which node`.
+
 ```json
 {
   "mcpServers": {
