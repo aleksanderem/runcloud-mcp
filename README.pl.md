@@ -8,14 +8,17 @@ MCP (Model Context Protocol) to protokół umożliwiający asystentom AI takim j
 
 ## Funkcje
 
-- **60+ narzędzi** pokrywających wszystkie główne endpointy API RunCloud
-- Pełne możliwości zarządzania serwerami
+- **100+ narzędzi** pokrywających WSZYSTKIE endpointy API RunCloud
+- Kompletne możliwości zarządzania serwerami
 - Wdrażanie i konfiguracja aplikacji webowych
 - Zarządzanie bazami danych i użytkownikami
-- Zarządzanie certyfikatami SSL
-- Integracja z Git do wdrożeń
+- Zaawansowane zarządzanie certyfikatami SSL (podstawowe i per-domena)
+- Integracja z Git z personalizacją skryptów wdrożeniowych
 - Zarządzanie zadaniami Cron i Supervisor
-- Konfiguracja zapory sieciowej i zabezpieczeń
+- Zarządzanie regułami firewall i Fail2Ban
+- Ustawienia serwera (SSH, automatyczne aktualizacje, metadane)
+- Endpointy danych statycznych (strefy czasowe, zestawienia znaków, instalatory)
+- Zarządzanie kluczami API zewnętrznych usług
 - Dostęp do logów w czasie rzeczywistym
 
 ## Wymagania
@@ -153,17 +156,21 @@ Po skonfigurowaniu możesz używać języka naturalnego do interakcji z RunCloud
 - Dokumentacja MCP: https://modelcontextprotocol.io
 - Wsparcie RunCloud: https://runcloud.io/support
 
-## Znane ograniczenia
+## Historia wersji
 
-Ten serwer MCP obecnie implementuje najczęściej używane endpointy API RunCloud. Następujące kategorie endpointów nie są jeszcze zaimplementowane:
+### Wersja 2.0.0
+- Kompletna implementacja WSZYSTKICH endpointów API RunCloud (100+ narzędzi)
+- Dodano zarządzanie certyfikatami SSL (tryby podstawowy i zaawansowany)
+- Dodano zarządzanie regułami firewall i Fail2Ban
+- Dodano ustawienia serwera (SSH, automatyczne aktualizacje, metadane)
+- Dodano endpointy danych statycznych
+- Dodano zarządzanie kluczami API zewnętrznych usług
+- Ulepszona integracja z Git z personalizacją skryptów wdrożeniowych
+- Pełna zgodność funkcjonalna z RunCloud API v2
 
-- **Zarządzanie certyfikatami SSL** - Instalacja, aktualizacje i zarządzanie certyfikatami SSL
-- **Reguły firewall** - Konfiguracja zapory sieciowej
-- **Ustawienia serwera** - Konfiguracja SSH, automatyczne aktualizacje, zarządzanie wersjami PHP
-- **Endpointy danych statycznych** - Strefy czasowe, zestawienia znaków, dostępne instalatory
-- **Klucze API zewnętrznych usług** - Zarządzanie kluczami API usług zewnętrznych
-
-Pełną listę brakujących endpointów znajdziesz w pliku `missing_endpoints_analysis.md`.
+### Wersja 1.0.0
+- Początkowe wydanie z 60+ podstawowymi endpointami
+- Podstawowe zarządzanie serwerem, aplikacjami, bazami danych i użytkownikami
 
 ## Autor
 

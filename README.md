@@ -8,14 +8,17 @@ MCP (Model Context Protocol) is a protocol that enables AI assistants like Claud
 
 ## Features
 
-- **60+ tools** covering all major RunCloud API endpoints
-- Full server management capabilities
+- **100+ tools** covering ALL RunCloud API endpoints
+- Complete server management capabilities
 - Web application deployment and configuration
 - Database and user management
-- SSL certificate management
-- Git integration for deployments
+- Advanced SSL certificate management (basic and per-domain)
+- Git integration with deployment script customization
 - Cron job and supervisor job management
-- Firewall and security configuration
+- Firewall rules and Fail2Ban management
+- Server settings (SSH, auto-updates, metadata)
+- Static data endpoints (timezones, collations, installers)
+- 3rd party API key management
 - Real-time log access
 
 ## Prerequisites
@@ -99,7 +102,7 @@ Create an `mcp.json` file in your project root:
 }
 ```
 
-## Available Tools (60+ endpoints)
+## Available Tools (100+ endpoints)
 
 ### Server Management
 - `list_servers` - List all servers in your RunCloud account
@@ -109,6 +112,17 @@ Create an `mcp.json` file in your project root:
 - `get_server_stats` - Get statistics for a specific server
 - `get_server_hardware_info` - Get hardware information for a server
 - `get_installation_script` - Get installation script for a server
+- `list_shared_servers` - List shared servers
+
+### Server Settings
+- `get_ssh_settings` - Get SSH configuration for a server
+- `update_ssh_settings` - Update SSH configuration (passwordless login, DNS, root login)
+- `update_server_metadata` - Update server name and provider
+- `update_server_autoupdate` - Configure auto-update settings
+
+### PHP Management
+- `list_php_versions` - List available PHP versions on a server
+- `change_php_cli_version` - Change PHP-CLI version
 
 ### Web Applications
 - `list_webapps` - List all web applications on a server
@@ -116,23 +130,41 @@ Create an `mcp.json` file in your project root:
 - `create_webapp` - Create a new web application on a server
 - `delete_webapp` - Delete a web application
 - `set_webapp_default` - Set a web application as default
+- `remove_webapp_default` - Remove web application from default status
 - `rebuild_webapp` - Rebuild a web application
 - `update_webapp_settings` - Update web application settings (public path, stack, security settings)
+- `change_webapp_php_version` - Change PHP version for a web application
+- `create_webapp_alias` - Create a web application alias
 
 ### Git Integration
 - `clone_git_repository` - Clone a git repository for a web application
 - `get_git_info` - Get git repository information
 - `change_git_branch` - Change git branch
 - `deploy_git` - Deploy code from git repository
+- `update_git_deployment_script` - Customize GIT deployment script
+- `delete_git_repository` - Remove GIT repository from web application
 
 ### Domain Management
 - `list_domains` - List all domains for a web application
+- `get_domain` - Get information about a specific domain
 - `add_domain` - Add a domain to a web application
-- `delete_domain` - Delete a domain
+- `delete_domain` - Delete a domain from a web application
 
-### SSL Management
+### SSL Management (Basic)
+- `get_ssl_info` - Get SSL certificate information for a web application
 - `install_ssl` - Install SSL certificate (Let's Encrypt or custom)
-- `get_ssl_info` - Get SSL certificate information
+- `update_ssl` - Update SSL configuration
+- `redeploy_ssl` - Redeploy SSL certificate (Let's Encrypt only)
+- `delete_ssl` - Delete SSL certificate
+
+### SSL Management (Advanced)
+- `get_advanced_ssl_status` - Get advanced SSL status for a web application
+- `switch_ssl_mode` - Switch SSL mode between basic and advanced
+- `install_domain_ssl` - Install SSL certificate for a specific domain
+- `get_domain_ssl_info` - Get SSL information for a specific domain
+- `update_domain_ssl` - Update SSL certificate for a specific domain
+- `redeploy_domain_ssl` - Redeploy SSL certificate for a specific domain
+- `delete_domain_ssl` - Delete SSL certificate from a specific domain
 
 ### Database Management
 - `list_databases` - List all databases on a server
@@ -175,13 +207,34 @@ Create an `mcp.json` file in your project root:
 - `get_server_logs` - Get server logs (nginx, apache, mysql, etc.)
 - `get_webapp_logs` - Get web application logs
 
-### Security
-- `get_firewall_rules` - Get firewall rules
-- `add_firewall_rule` - Add a firewall rule
+### Firewall Management
+- `create_firewall_rule` - Create a new firewall rule
+- `list_firewall_rules` - List all firewall rules
+- `get_firewall_rule` - Get information about a specific firewall rule
+- `deploy_firewall_rules` - Deploy firewall rules to the server
 - `delete_firewall_rule` - Delete a firewall rule
 
+### Fail2Ban Management
+- `list_blocked_ips` - List blocked IP addresses in Fail2Ban
+- `unblock_ip` - Unblock an IP address from Fail2Ban
+
 ### Script Installers
+- `get_installed_script` - Get installed PHP script information
+- `remove_installed_script` - Remove installed PHP script
 - `install_script` - Install scripts (WordPress, Joomla, Drupal, phpMyAdmin, etc.)
+
+### Static Data Endpoints
+- `list_database_collations` - Get list of available database collations
+- `list_timezones` - Get list of available timezones
+- `list_script_installers` - Get list of available script installers
+- `list_ssl_protocols` - Get list of available SSL protocols
+
+### 3rd Party API Keys
+- `create_external_api_key` - Create a new 3rd party API key
+- `list_external_api_keys` - List all 3rd party API keys
+- `get_external_api_key` - Get information about a specific API key
+- `update_external_api_key` - Update a 3rd party API key
+- `delete_external_api_key` - Delete a 3rd party API key
 
 ### Health Check
 - `health_check` - Check API health status
@@ -251,17 +304,21 @@ To modify or extend this server:
 - MCP Documentation: https://modelcontextprotocol.io
 - RunCloud Support: https://runcloud.io/support
 
-## Known Limitations
+## Version History
 
-This MCP server currently implements the most commonly used RunCloud API endpoints. The following categories of endpoints are not yet implemented:
+### Version 2.0.0
+- Complete implementation of ALL RunCloud API endpoints (100+ tools)
+- Added SSL certificate management (basic and advanced modes)
+- Added firewall rules and Fail2Ban management
+- Added server settings (SSH, auto-updates, metadata)
+- Added static data endpoints
+- Added 3rd party API key management
+- Enhanced Git integration with deployment script customization
+- Full feature parity with RunCloud API v2
 
-- **SSL Certificate Management** - Installation, updates, and management of SSL certificates
-- **Firewall Rules** - Security firewall configuration
-- **Server Settings** - SSH configuration, auto-updates, PHP version management
-- **Static Data Endpoints** - Timezones, collations, available installers
-- **3rd Party API Keys** - Management of external service API keys
-
-For a complete list of missing endpoints, see `missing_endpoints_analysis.md`.
+### Version 1.0.0
+- Initial release with 60+ core endpoints
+- Basic server, webapp, database, and user management
 
 ## Author
 
