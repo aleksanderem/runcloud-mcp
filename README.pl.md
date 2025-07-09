@@ -153,6 +153,18 @@ Po skonfigurowaniu możesz używać języka naturalnego do interakcji z RunCloud
 - Dokumentacja MCP: https://modelcontextprotocol.io
 - Wsparcie RunCloud: https://runcloud.io/support
 
+## Znane ograniczenia
+
+Ten serwer MCP obecnie implementuje najczęściej używane endpointy API RunCloud. Następujące kategorie endpointów nie są jeszcze zaimplementowane:
+
+- **Zarządzanie certyfikatami SSL** - Instalacja, aktualizacje i zarządzanie certyfikatami SSL
+- **Reguły firewall** - Konfiguracja zapory sieciowej
+- **Ustawienia serwera** - Konfiguracja SSH, automatyczne aktualizacje, zarządzanie wersjami PHP
+- **Endpointy danych statycznych** - Strefy czasowe, zestawienia znaków, dostępne instalatory
+- **Klucze API zewnętrznych usług** - Zarządzanie kluczami API usług zewnętrznych
+
+Pełną listę brakujących endpointów znajdziesz w pliku `missing_endpoints_analysis.md`.
+
 ## Autor
 
 Aleksander M.

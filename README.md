@@ -117,6 +117,7 @@ Create an `mcp.json` file in your project root:
 - `delete_webapp` - Delete a web application
 - `set_webapp_default` - Set a web application as default
 - `rebuild_webapp` - Rebuild a web application
+- `update_webapp_settings` - Update web application settings (public path, stack, security settings)
 
 ### Git Integration
 - `clone_git_repository` - Clone a git repository for a web application
@@ -249,6 +250,18 @@ To modify or extend this server:
 - RunCloud API Documentation: https://runcloud.io/docs/api
 - MCP Documentation: https://modelcontextprotocol.io
 - RunCloud Support: https://runcloud.io/support
+
+## Known Limitations
+
+This MCP server currently implements the most commonly used RunCloud API endpoints. The following categories of endpoints are not yet implemented:
+
+- **SSL Certificate Management** - Installation, updates, and management of SSL certificates
+- **Firewall Rules** - Security firewall configuration
+- **Server Settings** - SSH configuration, auto-updates, PHP version management
+- **Static Data Endpoints** - Timezones, collations, available installers
+- **3rd Party API Keys** - Management of external service API keys
+
+For a complete list of missing endpoints, see `missing_endpoints_analysis.md`.
 
 ## Author
 

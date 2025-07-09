@@ -227,6 +227,24 @@ class RunCloudMCPServer {
             required: ['serverId', 'webappId']
           }
         },
+        {
+          name: 'update_webapp_settings',
+          description: 'Update web application settings (public path, stack, security settings)',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              serverId: { type: 'number', description: 'The ID of the server' },
+              webappId: { type: 'number', description: 'The ID of the web application' },
+              publicPath: { type: 'string', description: 'Public path for the web application (optional)' },
+              stack: { type: 'string', enum: ['hybrid', 'nativenginx', 'customnginx'], description: 'Web server stack' },
+              stackMode: { type: 'string', enum: ['production', 'development'], description: 'Stack mode' },
+              clickjackingProtection: { type: 'boolean', description: 'Enable clickjacking protection' },
+              xssProtection: { type: 'boolean', description: 'Enable XSS protection' },
+              mimeSniffingProtection: { type: 'boolean', description: 'Enable MIME sniffing protection' }
+            },
+            required: ['serverId', 'webappId']
+          }
+        },
 
         // Git Integration
         {
@@ -841,6 +859,8 @@ class RunCloudMCPServer {
             return await this.setWebappDefault(args);
           case 'rebuild_webapp':
             return await this.rebuildWebapp(args);
+          case 'update_webapp_settings':
+            return await this.updateWebappSettings(args);
 
           // Git Integration
           case 'clone_git_repository':
@@ -1052,6 +1072,17 @@ class RunCloudMCPServer {
 
   async rebuildWebapp(args) {
     return this.apiResponse(api.patch(`/servers/${args.serverId}/webapps/${args.webappId}/rebuild`));
+  }
+
+  async updateWebappSettings(args) {
+    const data = {};
+    if (args.publicPath !== undefined) data.publicPath = args.publicPath;
+    if (args.stack) data.stack = args.stack;
+    if (args.stackMode) data.stackMode = args.stackMode;
+    if (args.clickjackingProtection !== undefined) data.clickjackingProtection = args.clickjackingProtection;
+    if (args.xssProtection !== undefined) data.xssProtection = args.xssProtection;
+    if (args.mimeSniffingProtection !== undefined) data.mimeSniffingProtection = args.mimeSniffingProtection;
+    return this.apiResponse(api.patch(`/servers/${args.serverId}/webapps/${args.webappId}/settings/fpmnginx`, data));
   }
 
   // Git Methods
