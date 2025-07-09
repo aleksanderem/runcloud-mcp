@@ -44,8 +44,8 @@ class RunCloudMCPServer {
   constructor() {
     this.server = new Server(
       {
-        name: 'runcloud-mcp-server-extended',
-        version: '2.0.0',
+        name: 'runcloud-mcp-server',
+        version: '2.0.1',
       },
       {
         capabilities: {
@@ -273,27 +273,31 @@ class RunCloudMCPServer {
               serverId: { type: 'number', description: 'The ID of the server' },
               name: { type: 'string', description: 'Web application name' },
               domainName: { type: 'string', description: 'Primary domain name' },
-              user: { type: 'string', description: 'System user' },
+              user: { type: 'number', description: 'System user ID' },
               publicPath: { type: 'string', description: 'Public path (default: /)' },
               phpVersion: { type: 'string', description: 'PHP version (e.g., "php81")' },
               stack: { type: 'string', description: 'Stack (native, hybrid)' },
               stackMode: { type: 'string', description: 'Stack mode (production, development)' },
-              clickjackingProtection: { type: 'boolean' },
-              xssProtection: { type: 'boolean' },
-              mimeSniffingProtection: { type: 'boolean' },
-              processManager: { type: 'string' },
-              processManagerMaxChildren: { type: 'number' },
-              processManagerMaxRequests: { type: 'number' },
-              timezone: { type: 'string' },
-              disableFunctions: { type: 'string' },
-              maxExecutionTime: { type: 'number' },
-              maxInputTime: { type: 'number' },
-              maxInputVars: { type: 'number' },
-              memoryLimit: { type: 'number' },
-              postMaxSize: { type: 'number' },
-              uploadMaxFilesize: { type: 'number' },
-              sessionGcMaxlifetime: { type: 'number' },
-              allowUrlFopen: { type: 'boolean' }
+              clickjackingProtection: { type: 'boolean', description: 'Enable clickjacking protection' },
+              xssProtection: { type: 'boolean', description: 'Enable XSS protection' },
+              mimeSniffingProtection: { type: 'boolean', description: 'Enable MIME sniffing protection' },
+              processManager: { type: 'string', description: 'Process manager (dynamic, ondemand, static)' },
+              processManagerMaxChildren: { type: 'number', description: 'Max children processes' },
+              processManagerMaxRequests: { type: 'number', description: 'Max requests per process' },
+              processManagerStartServers: { type: 'number', description: 'Start servers (for dynamic)' },
+              processManagerMinSpareServers: { type: 'number', description: 'Min spare servers (for dynamic)' },
+              processManagerMaxSpareServers: { type: 'number', description: 'Max spare servers (for dynamic)' },
+              openBasedir: { type: 'string', description: 'Open basedir restriction' },
+              timezone: { type: 'string', description: 'Timezone (e.g., UTC)' },
+              disableFunctions: { type: 'string', description: 'Comma-separated disabled functions' },
+              maxExecutionTime: { type: 'number', description: 'Max execution time in seconds' },
+              maxInputTime: { type: 'number', description: 'Max input time in seconds' },
+              maxInputVars: { type: 'number', description: 'Max input variables' },
+              memoryLimit: { type: 'number', description: 'Memory limit in MB' },
+              postMaxSize: { type: 'number', description: 'Max POST size in MB' },
+              uploadMaxFilesize: { type: 'number', description: 'Max upload file size in MB' },
+              sessionGcMaxlifetime: { type: 'number', description: 'Session GC max lifetime in seconds' },
+              allowUrlFopen: { type: 'boolean', description: 'Allow URL fopen' }
             },
             required: ['serverId', 'name', 'domainName', 'user']
           }
@@ -387,11 +391,31 @@ class RunCloudMCPServer {
               webappId: { type: 'number', description: 'The ID of the web application' },
               name: { type: 'string', description: 'Alias name' },
               domainName: { type: 'string', description: 'Domain name for alias' },
-              user: { type: 'string', description: 'System user' },
+              user: { type: 'number', description: 'System user ID' },
               publicPath: { type: 'string', description: 'Public path' },
               phpVersion: { type: 'string', description: 'PHP version' },
               stack: { type: 'string', description: 'Stack type' },
-              stackMode: { type: 'string', description: 'Stack mode' }
+              stackMode: { type: 'string', description: 'Stack mode' },
+              clickjackingProtection: { type: 'boolean', description: 'Enable clickjacking protection' },
+              xssProtection: { type: 'boolean', description: 'Enable XSS protection' },
+              mimeSniffingProtection: { type: 'boolean', description: 'Enable MIME sniffing protection' },
+              processManager: { type: 'string', description: 'Process manager (dynamic, ondemand, static)' },
+              processManagerMaxChildren: { type: 'number', description: 'Max children processes' },
+              processManagerMaxRequests: { type: 'number', description: 'Max requests per process' },
+              processManagerStartServers: { type: 'number', description: 'Start servers (for dynamic)' },
+              processManagerMinSpareServers: { type: 'number', description: 'Min spare servers (for dynamic)' },
+              processManagerMaxSpareServers: { type: 'number', description: 'Max spare servers (for dynamic)' },
+              openBasedir: { type: 'string', description: 'Open basedir restriction' },
+              timezone: { type: 'string', description: 'Timezone (e.g., UTC)' },
+              disableFunctions: { type: 'string', description: 'Comma-separated disabled functions' },
+              maxExecutionTime: { type: 'number', description: 'Max execution time in seconds' },
+              maxInputTime: { type: 'number', description: 'Max input time in seconds' },
+              maxInputVars: { type: 'number', description: 'Max input variables' },
+              memoryLimit: { type: 'number', description: 'Memory limit in MB' },
+              postMaxSize: { type: 'number', description: 'Max POST size in MB' },
+              uploadMaxFilesize: { type: 'number', description: 'Max upload file size in MB' },
+              sessionGcMaxlifetime: { type: 'number', description: 'Session GC max lifetime in seconds' },
+              allowUrlFopen: { type: 'boolean', description: 'Allow URL fopen' }
             },
             required: ['serverId', 'webappId', 'name', 'domainName', 'user']
           }
@@ -1708,9 +1732,9 @@ class RunCloudMCPServer {
       phpVersion: args.phpVersion || 'php74',
       stack: args.stack || 'native',
       stackMode: args.stackMode || 'production',
-      clickjackingProtection: args.clickjackingProtection !== false,
-      xssProtection: args.xssProtection !== false,
-      mimeSniffingProtection: args.mimeSniffingProtection !== false,
+      clickjackingProtection: args.clickjackingProtection === false ? false : true,
+      xssProtection: args.xssProtection === false ? false : true,
+      mimeSniffingProtection: args.mimeSniffingProtection === false ? false : true,
       processManager: args.processManager || 'ondemand',
       processManagerMaxChildren: args.processManagerMaxChildren || 50,
       processManagerMaxRequests: args.processManagerMaxRequests || 500,
@@ -1723,8 +1747,21 @@ class RunCloudMCPServer {
       postMaxSize: args.postMaxSize || 256,
       uploadMaxFilesize: args.uploadMaxFilesize || 256,
       sessionGcMaxlifetime: args.sessionGcMaxlifetime || 1440,
-      allowUrlFopen: args.allowUrlFopen !== false
+      allowUrlFopen: args.allowUrlFopen === false ? false : true
     };
+    
+    // Add dynamic process manager fields if needed
+    if (data.processManager === 'dynamic') {
+      data.processManagerStartServers = args.processManagerStartServers || 2;
+      data.processManagerMinSpareServers = args.processManagerMinSpareServers || 1;
+      data.processManagerMaxSpareServers = args.processManagerMaxSpareServers || 3;
+    }
+    
+    // Add openBasedir if provided
+    if (args.openBasedir !== undefined) {
+      data.openBasedir = args.openBasedir;
+    }
+    
     return this.apiResponse(api.post(`/servers/${args.serverId}/webapps/custom`, data));
   }
 
@@ -1767,8 +1804,37 @@ class RunCloudMCPServer {
       publicPath: args.publicPath || '/',
       phpVersion: args.phpVersion || 'php74',
       stack: args.stack || 'native',
-      stackMode: args.stackMode || 'production'
+      stackMode: args.stackMode || 'production',
+      clickjackingProtection: args.clickjackingProtection === false ? false : true,
+      xssProtection: args.xssProtection === false ? false : true,
+      mimeSniffingProtection: args.mimeSniffingProtection === false ? false : true,
+      processManager: args.processManager || 'ondemand',
+      processManagerMaxChildren: args.processManagerMaxChildren || 50,
+      processManagerMaxRequests: args.processManagerMaxRequests || 500,
+      timezone: args.timezone || 'UTC',
+      disableFunctions: args.disableFunctions || '',
+      maxExecutionTime: args.maxExecutionTime || 30,
+      maxInputTime: args.maxInputTime || 60,
+      maxInputVars: args.maxInputVars || 1000,
+      memoryLimit: args.memoryLimit || 256,
+      postMaxSize: args.postMaxSize || 256,
+      uploadMaxFilesize: args.uploadMaxFilesize || 256,
+      sessionGcMaxlifetime: args.sessionGcMaxlifetime || 1440,
+      allowUrlFopen: args.allowUrlFopen === false ? false : true
     };
+    
+    // Add dynamic process manager fields if needed
+    if (data.processManager === 'dynamic') {
+      data.processManagerStartServers = args.processManagerStartServers || 2;
+      data.processManagerMinSpareServers = args.processManagerMinSpareServers || 1;
+      data.processManagerMaxSpareServers = args.processManagerMaxSpareServers || 3;
+    }
+    
+    // Add openBasedir if provided
+    if (args.openBasedir !== undefined) {
+      data.openBasedir = args.openBasedir;
+    }
+    
     return this.apiResponse(api.post(`/servers/${args.serverId}/webapps/${args.webappId}/alias`, data));
   }
 
@@ -2183,7 +2249,7 @@ class RunCloudMCPServer {
   async run() {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.error('RunCloud MCP Server Extended (v2.0.0) running...');
+    console.error('RunCloud MCP Server (v2.0.1) running...');
   }
 }
 
